@@ -26,7 +26,8 @@ const keys = document.querySelector('.calculator-keys');
         }
 
         if (target.classList.contains('decimal')) {
-            console.log('decimal', target.value);
+            inputDecimal(target.value);
+            updateDisplay();
             return;
         }
 
@@ -45,3 +46,12 @@ const keys = document.querySelector('.calculator-keys');
 
         calculator.displayValue = displayValue === '0' ? digit : displayValue + digit;
     }
+
+    function inputDecimal(dot) {
+        // If the `displayValue` property does not contain a decimal point
+        if (!calculator.displayValue.includes(dot)) {
+          // Append the decimal point
+          calculator.displayValue += dot;
+        }
+      }
+      
