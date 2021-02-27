@@ -21,7 +21,9 @@ const keys = document.querySelector('.calculator-keys');
         }
 
         if (target.classList.contains('operator')) {
-            console.log('operator', target.value);
+            handleOperator(target.value);
+            updateDisplay();
+
             return;
         }
 
@@ -42,16 +44,36 @@ const keys = document.querySelector('.calculator-keys');
     });
 
     function inputDigit(digit) {
-        const {displayValue} = calculator;
+        const {displayValue, waitingForSecondOperand} = calculator;
 
-        calculator.displayValue = displayValue === '0' ? digit : displayValue + digit;
+        if (waitingForSecondOperand === true) {
+            calculator.displayValue = digit;
+            calculator.waitingForSecondOperand = false;
+        } else {
+            calculator.displayValue = displayValue === '0' ? digit : displayValue + digit;
+        }
+
+        console.log(calculator);
+
     }
 
     function inputDecimal(dot) {
-        // If the `displayValue` property does not contain a decimal point
         if (!calculator.displayValue.includes(dot)) {
-          // Append the decimal point
           calculator.displayValue += dot;
         }
       }
+
+    function handleOperator(nextOperator) {
+        const { firstOperand, displayValue, operator } = calculator
+        const inputValue = parseFloat(displayValue);
+        if (firstOperand === null && !isNaN(inputValue)) {
+          calculator.firstOperand = inputValue;
+        }
+      
+        calculator.waitingForSecondOperand = true;
+        calculator.operator = nextOperator;
+        console.log(calculator);
+
+      }
+      
       
